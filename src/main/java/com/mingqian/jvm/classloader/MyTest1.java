@@ -4,6 +4,10 @@ package com.mingqian.jvm.classloader;
  * Created by mingqian on 2019/4/13.
  * 对于静态字段来说，只有直接定义了该字段的类才会被初始化
  * 当一个类在初始化时，要求其父类全部都已经初始化完毕了
+ * -XX:+TraceClassLoading   用于追踪类的的加载信息并打印出来
+ * -XX:+<option>    表示开启option选项
+ * -XX:-<option>    表示关闭option选项
+ * -XX:<option>=<value>    表示option选项的值设置为value
  */
 public class MyTest1 {
     public static void main(String[] args) {
@@ -15,10 +19,13 @@ public class MyTest1 {
          * 结果分析：
          *      这里并没有初始化MyChild1因为str是定义在父类，所以没有主动使用MyChild1，
          *      而是主动使用调用的父类，并初始化父类，
-         *      所以MyChild1并没有初始化并执行静态代码块
+         *      所以MyChild1并没有初始化并执行静态代码块，虽然没有初始化MyChile1，
+         *      但是jvm加载了MyChild1.class
+         *      [Loaded com.mingqian.jvm.classloader.MyParent1 from file:/F:/code/jvm_lecture/build/classes/java/main/]
+         *      [Loaded com.mingqian.jvm.classloader.MyChild1 from file:/F:/code/jvm_lecture/build/classes/java/main/]
          */
 
-        System.out.println(MyChild1.str2);
+       // System.out.println(MyChild1.str2);
         /**
          * 运行结果：
          * MyParent1 static block
